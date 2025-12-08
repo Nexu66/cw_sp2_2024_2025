@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-#define USE_DFA_MINIMIZATION
+//#define USE_DFA_MINIMIZATION
 
 #define FILE1_A "../built_src/file1.hpp"
 #define FILE1_B "../built_src/file1.txt"
@@ -226,7 +226,7 @@ char* process_term(char* inputStr, int startState, int* nextFreeState) {
                 ++inputStr;
             }
             ++inputStr;
-            ++* nextFreeState;
+            ++*nextFreeState;
         }
 
         startState = *nextFreeState - 1;
@@ -296,7 +296,7 @@ char* process_alternation(char* inputStr, int baseState, int* nextFreeState) {
         }
     }
 
-    ++* nextFreeState;
+    ++ * nextFreeState;
 
     if (inputStr[0] == ')' && inputStr[1] != ')') {
         ++inputStr;
@@ -365,8 +365,8 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
 }
 #endif
 
-#define TOKENS_RE         ";|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]"
-#define KEYWORDS_RE       ";|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|#Program|Variable|Start|Stop|BREAK|CONTINUE|Read|Write|If|Else|For|To|DOWNTO|Do|WHILE|REPEAT|UNTIL|GOTO|Div|Mod|<|>|!|&|||Integer_2"
+#define TOKENS_RE         ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<|>|[#_0-9A-Za-z]+|[^ \t\r\f\v\n]"
+#define KEYWORDS_RE       ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|#Program|Variable|Start|Stop|Read|Write|If|Else|For|To|Do|Div|Mod|<|>|!|&|\\||Integer_2"
 #define IDENTIFIERS_RE    "_[A-Z][0-9][A-Z][A-Z]"
 #define UNSIGNEDVALUES_RE "0|[1-9][0-9]*"
 
@@ -376,9 +376,10 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           ";"\
                           "|:(^|=)"\
                           "|=(:|=)"\
-                          "|+"\
+                          "|++"\
+                          "|--"\
                           "|-"\
-                          "|*"\
+                          "|**"\
                           "|,"\
                           "|!="\
                           "|["\
@@ -387,8 +388,8 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|<="\
-                          "|>="\
+                          "|<"\
+                          "|>"\
                           "|"\
                           "(_|0|1|2|3|4|5|6|7|8|9|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)~"\
                           "|"\
@@ -399,9 +400,10 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           ";"\
                           "|:="\
                           "|=:"\
-                          "|+"\
+                          "|++"\
+                          "|--"\
                           "|-"\
-                          "|*"\
+                          "|**"\
                           "|,"\
                           "|=="\
                           "|!="\
@@ -412,112 +414,103 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|NAME"\
-                          "|DATA"\
-                          "|BODY"\
-                          "|END"\
-                          "|BREAK"\
-                          "|CONTINUE"\
-                          "|GET"\
-                          "|PUT"\
-                          "|IF"\
-                          "|ELSE"\
-                          "|FOR"\
-                          "|TO"\
-                          "|DOWNTO"\
-                          "|DO"\
-                          "|WHILE"\
-                          "|REPEAT"\
-                          "|UNTIL"\
-                          "|GOTO"\
-                          "|DIV"\
-                          "|MOD"\
-                          "|<="\
-                          "|>="\
-                          "|NOT"\
-                          "|AND"\
-                          "|OR"\
-                          "|INTEGER16"\
+                          "|#Program"\
+                          "|Variable"\
+                          "|Start"\
+                          "|Stop"\
+                          "|Read"\
+                          "|Write"\
+                          "|If"\
+                          "|Else"\
+                          "|For"\
+                          "|To"\
+                          "|Do"\
+                          "|Div"\
+                          "|Mod"\
+                          "|<"\
+                          "|>"\
+                          "|!"\
+                          "|&"\
+                          "|\\|"\
+                          "|Integer_2"\
                           //\0
 
 #define KEYWORDS_RN_      "("\
                           ";"\
                           "|:="\
-                          "|:"\
                           "|=:"\
-                          "|=="\
-                          "|+"\
+                          "|++"\
+                          "|--"\
                           "|-"\
-                          "|*"\
+                          "|**"\
                           "|,"\
+                          "|=="\
                           "|!="\
+                          "|:"\
                           "|["\
                           "|]"\
                           "|(("\
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|NAME"\
-                          "|DATA"\
-                          "|BODY"\
-                          "|END"\
-                          "|BREAK"\
-                          "|CONTINUE"\
-                          "|GET"\
-                          "|PUT"\
-                          "|IF"\
-                          "|ELSE"\
-                          "|FOR"\
-                          "|TO"\
-                          "|DOWNTO"\
-                          "|DO"\
-                          "|WHILE"\
-                          "|REPEAT"\
-                          "|UNTIL"\
-                          "|GOTO"\
-                          "|DIV"\
-                          "|MOD"\
-                          "|<="\
-                          "|>="\
-                          "|NOT"\
-                          "|AND"\
-                          "|OR"\
-                          "|INTEGER16"\
+                          "|#Program"\
+                          "|Variable"\
+                          "|Start"\
+                          "|Stop"\
+                          "|Read"\
+                          "|Write"\
+                          "|If"\
+                          "|Else"\
+                          "|For"\
+                          "|To"\
+                          "|Do"\
+                          "|Div"\
+                          "|Mod"\
+                          "|<"\
+                          "|>"\
+                          "|!"\
+                          "|&"\
+                          "|\\|"\
+                          "|Integer_2"\
                           //\0
 
 #define KEYWORDS_RN       "("\
                           ";"\
-                          "|:(^|=)"\
-                          "|=(:|=)"\
-                          "|+"\
+                          "|:="\
+                          "|=:"\
+                          "|++"\
+                          "|--"\
                           "|-"\
-                          "|*"\
+                          "|**"\
                           "|,"\
+                          "|=="\
                           "|!="\
+                          "|:"\
                           "|["\
                           "|]"\
                           "|(("\
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|N(AME|OT)"\
-                          "|D(ATA|O(^|WNTO)|IV)"\
-                          "|B(ODY|REAK)"\
-                          "|E(ND|LSE)"\
-                          "|CONTINUE"\
-                          "|G(ET|OTO)"\
-                          "|PUT"\
-                          "|I(F|NTEGER16)"\
-                          "|FOR"\
-                          "|TO"\
-                          "|WHILE"\
-                          "|REPEAT"\
-                          "|UNTIL"\
-                          "|MOD"\
-                          "|<="\
-                          "|>="\
-                          "|AND"\
-                          "|OR"\
+                          "|#Program"\
+                          "|Variable"\
+                          "|Start"\
+                          "|Stop"\
+                          "|Read"\
+                          "|Write"\
+                          "|If"\
+                          "|Else"\
+                          "|For"\
+                          "|To"\
+                          "|Do"\
+                          "|Div"\
+                          "|Mod"\
+                          "|<"\
+                          "|>"\
+                          "|!"\
+                          "|&"\
+                          "|\|"\
+                          "|Integer_2"\
                           //\0
 
 #define IDENTIFIERS_RN    "("\
@@ -526,7 +519,6 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           "(0|1|2|3|4|5|6|7|8|9)"\
                           "(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)"\
                           "(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)"\
-                          "
                           //\0
 
 #define UNSIGNEDVALUES_RN "("\
@@ -537,7 +529,7 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           //\0
 
 
-void generatorB(char* rn, char * fileNameA, char* fileNameB, char* tableName) { // "C"
+void generatorB(char* rn, char* fileNameA, char* fileNameB, char* tableName) { // "C"
     printf("\nNOT FULLY IMPLEMENTED!\n\n");
 
     int dead_state = -1;
@@ -587,12 +579,12 @@ void generatorB(char* rn, char * fileNameA, char* fileNameB, char* tableName) { 
     }
     printf(".\n");
     printf("  Dead state (%s): Q%03d .\n", tableName, dead_state);
-    
+
     int state_counter = nextFreeState;
 
     generate_transition_table(state_counter);
 
-    if (state_counter <= 28) {       
+    if (state_counter <= 28) {
         printf("Transition table (%s) of a quasi-deterministic finite state machine (QFA):\n", tableName);
         print_transition_table(state_counter, -1);
     }
@@ -611,9 +603,9 @@ void generatorB(char* rn, char * fileNameA, char* fileNameB, char* tableName) { 
     print_transition_table_to_file(fileNameA, tableName, state_counter, dead_state);
 }
 
-void printAlternationSymbol(char * exludedSymbols) {
+void printAlternationSymbol(char* exludedSymbols) {
     char printAlternationSeparator = 0;
-    for (unsigned int symbols = 1; symbols <= 255; ++symbols){
+    for (unsigned int symbols = 1; symbols <= 255; ++symbols) {
         char* exludedSymbols_ = exludedSymbols;
         for (; *exludedSymbols_; ++exludedSymbols_) {
             if (*exludedSymbols_ == symbols) {
@@ -634,11 +626,11 @@ void printAlternationSymbol(char * exludedSymbols) {
                     symbols == '\"') {
                     printf("\\%c", symbols);
                 }
-                else if (symbols == '('  ||
-                    symbols == ')'  ||
-                    symbols == '|'  ||
-                    symbols == '~'  ||
-                    symbols == '^' ) {
+                else if (symbols == '(' ||
+                    symbols == ')' ||
+                    symbols == '|' ||
+                    symbols == '~' ||
+                    symbols == '^') {
                     printf("%c%c", symbols, symbols);
                 }
                 else {
@@ -674,12 +666,12 @@ int main() {
     //";|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]"
     //;|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]
     ";:=+-*,!:[](){}<>"
-    "_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    " \t\r\f\v\n";
+        "_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        " \t\r\f\v\n";
     printAlternationSymbol((char*)
         ";:=+-*,!:[](){}<>"
         "_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        " \t\r\f\v\n"   
+        " \t\r\f\v\n"
     );
     (void)getchar();
 #endif
