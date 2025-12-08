@@ -4,14 +4,14 @@
 *                         file: lexicapart_dfa_one.cpp      *
 *                                                  (draft!) *
 *************************************************************/
-#define MAX_DFA_SCAN_LEXEM_SIZE_FOR_TOKEN_PARSING 16
-#define USE_DFA_FOR_TOKEN_PARSING
-#define USE_DFA_TO_ACCEPT_KEYWORD
-#define USE_DFA_TO_ACCEPT_IDENTIFIER
-#define USE_DFA_TO_ACCEPT_UNSIGNEDVALUE
+//#define MAX_DFA_SCAN_LEXEM_SIZE_FOR_TOKEN_PARSING 16
+//#define USE_DFA_FOR_TOKEN_PARSING
+//#define USE_DFA_TO_ACCEPT_KEYWORD
+//#define USE_DFA_TO_ACCEPT_IDENTIFIER
+//#define USE_DFA_TO_ACCEPT_UNSIGNEDVALUE
 
-#define TOKENS_RE         ";|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]"
-#define KEYWORDS_RE       ";|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|#Program|Variable|Start|Stop|BREAK|CONTINUE|Read|Write|If|Else|For|To|DOWNTO|Do|WHILE|REPEAT|UNTIL|GOTO|Div|Mod|<|>|!|&|||Integer_2"
+#define TOKENS_RE         ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[#_0-9A-Za-z]+|[^ \t\r\f\v\n]"
+#define KEYWORDS_RE       ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|#Program|Variable|Start|Stop|Read|Write|If|Else|For|To|Do|Div|Mod|<|>|!|&|\\||Integer_2"
 #define IDENTIFIERS_RE    "_[A-Z][0-9][A-Z][A-Z]"
 #define UNSIGNEDVALUES_RE "0|[1-9][0-9]*"
 
