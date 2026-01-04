@@ -4,14 +4,14 @@
 *                         file: lexicapart_dfa_one.cpp      *
 *                                                  (draft!) *
 *************************************************************/
-//#define MAX_DFA_SCAN_LEXEM_SIZE_FOR_TOKEN_PARSING 16
-//#define USE_DFA_FOR_TOKEN_PARSING
-//#define USE_DFA_TO_ACCEPT_KEYWORD
-//#define USE_DFA_TO_ACCEPT_IDENTIFIER
-//#define USE_DFA_TO_ACCEPT_UNSIGNEDVALUE
+#define MAX_DFA_SCAN_LEXEM_SIZE_FOR_TOKEN_PARSING 16
+#define USE_DFA_FOR_TOKEN_PARSING
+#define USE_DFA_TO_ACCEPT_KEYWORD
+#define USE_DFA_TO_ACCEPT_IDENTIFIER
+#define USE_DFA_TO_ACCEPT_UNSIGNEDVALUE
 
-#define TOKENS_RE         ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[#_0-9A-Za-z]+|[^ \t\r\f\v\n]"
-#define KEYWORDS_RE       ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|#Program|Variable|Start|Stop|Read|Write|If|Else|For|To|Do|Div|Mod|<|>|!|&|\\||Integer_2"
+#define TOKENS_RE         "#Program|=:|&|\\++|\\||\\--|\\*+|==|!=|>|<|!|[_0-9A-Za-z]+|[^ \t\r\f\v\n]"
+#define KEYWORDS_RE       ";|=:|&|\\++|\\--|\\*+|Div|Mod|==|!=|>|<|!|#Program|Start|Variable|,|Stop|Read|\\[|\\]|\\(|\\)|\\{|\\}|Write|If|Else|For|To|Do|\\||Integer_2"
 #define IDENTIFIERS_RE    "_[A-Z][0-9][A-Z][A-Z]"
 #define UNSIGNEDVALUES_RE "0|[1-9][0-9]*"
 
@@ -235,7 +235,7 @@ unsigned int getIdentifierId(char(*identifierIdsTable)[MAX_LEXEM_SIZE], char* st
 
 // try to get identifier
 unsigned int tryToGetIdentifier(struct LexemInfo* lexemInfoInTable, char(*identifierIdsTable)[MAX_LEXEM_SIZE]) {
-	char * identifiers_re = (char*) IDENTIFIERS_RE;
+	char* identifiers_re = (char*)IDENTIFIERS_RE;
 	//char identifiers_re[] = "_[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z]";
 
 #ifdef USE_DFA_TO_ACCEPT_IDENTIFIER
@@ -257,7 +257,7 @@ unsigned int tryToGetIdentifier(struct LexemInfo* lexemInfoInTable, char(*identi
 
 // try to get value
 unsigned int tryToGetUnsignedValue(struct LexemInfo* lexemInfoInTable) {
-	char * unsignedvalues_re = (char*) UNSIGNEDVALUES_RE;
+	char* unsignedvalues_re = (char*)UNSIGNEDVALUES_RE;
 	//char unsignedvalues_re[] = "0|[1-9][0-9]*";
 
 #ifdef USE_DFA_TO_ACCEPT_UNSIGNEDVALUE
@@ -353,7 +353,7 @@ unsigned int getKeyWordId(char* keywords_, char* lexemStr, unsigned int baseId) 
 
 // try to get KeyWord
 char tryToGetKeyWord(struct LexemInfo* lexemInfoInTable) {
-	char * keywords_re = (char*) KEYWORDS_RE;
+	char* keywords_re = (char*)KEYWORDS_RE;
 	//char keywords_re[] = ";|<<|>>|\\+|-|\\*|,|==|!=|:|\\(|\\)|NAME|DATA|BODY|END|EXIT|CONTINUE|GET|PUT|IF|ELSE|FOR|TO|DOWNTO|DO|WHILE|REPEAT|UNTIL|GOTO|DIV|MOD|<=|>=|NOT|AND|OR|INTEGER16";
 	//char keywords_re[] = ";|<<|\\+\\+|--|\\*\\*|==|\\(|\\)|!=|:|name|data|body|end|get|put|for|to|downto|do|while|continue|exit|repeat|until|if|goto|div|mod|le|ge|not|and|or|long|int";
 	char keywords_[sizeof(KEYWORDS_RE)] = { '\0' };
@@ -415,7 +415,7 @@ struct LexemInfo lexicalAnalyze(struct LexemInfo* lexemInfoInPtr, char(*identifi
 }
 
 struct LexemInfo tokenize(char* text, struct LexemInfo** lastLexemInfoInTable, char(*identifierIdsTable)[MAX_LEXEM_SIZE], struct LexemInfo(*lexicalAnalyzeFunctionPtr)(struct LexemInfo*, char(*)[MAX_LEXEM_SIZE])) {
-	char * tokens_re = (char*) TOKENS_RE;
+	char* tokens_re = (char*)TOKENS_RE;
 	//char tokens_re[] = ";|<<|>>|\\+|-|\\*|,|==|!=|:|\\(|\\)|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]";
 	//char tokens_re[] = "<<|\\+\\+|--|\\*\\*|==|\\(|\\)|!=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]";
 #ifndef USE_DFA_FOR_TOKEN_PARSING
@@ -427,7 +427,7 @@ struct LexemInfo tokenize(char* text, struct LexemInfo** lastLexemInfoInTable, c
 #endif
 
 #ifdef USE_DFA_FOR_TOKEN_PARSING
-	for (char* text_ = text, *text__ = text; *text_ != '\0'; ++ * lastLexemInfoInTable, text__ = ++text_){
+	for (char* text_ = text, *text__ = text; *text_ != '\0'; ++*lastLexemInfoInTable, text__ = ++text_) {
 		for (; *text_ != '\0' && !getFirstEntry(&transitionTable1, MAX_DFA_SCAN_LEXEM_SIZE_FOR_TOKEN_PARSING, transitionTable1FinitStates, &text_); ++text__, text_ = text__);
 		if (*text_ == '\0') break;
 		strncpy((*lastLexemInfoInTable)->lexemStr, text__, text_ - text__ + 1);

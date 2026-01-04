@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-//#define USE_DFA_MINIMIZATION
+#define USE_DFA_MINIMIZATION
 
 #define FILE1_A "../built_src/file1.hpp"
 #define FILE1_B "../built_src/file1.txt"
@@ -365,8 +365,8 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
 }
 #endif
 
-#define TOKENS_RE         ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<|>|[#_0-9A-Za-z]+|[^ \t\r\f\v\n]"
-#define KEYWORDS_RE       ";|:=|=:|\\+\\+|--|-|\\*\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|#Program|Variable|Start|Stop|Read|Write|If|Else|For|To|Do|Div|Mod|<|>|!|&|\\||Integer_2"
+#define TOKENS_RE         "#Program|=:|&|\\++|\\||\\--|\\*+|==|!=|>|<|!|[_0-9A-Za-z]+|[^ \t\r\f\v\n]"
+#define KEYWORDS_RE       ";|=:|&|\\++|\\--|\\*+|Div|Mod|==|!=|>|<|!|#Program|Start|Variable|,|Stop|Read|\\[|\\]|\\(|\\)|\\{|\\}|Write|If|Else|For|To|Do|\\||Integer_2"
 #define IDENTIFIERS_RE    "_[A-Z][0-9][A-Z][A-Z]"
 #define UNSIGNEDVALUES_RE "0|[1-9][0-9]*"
 
@@ -374,50 +374,52 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
 
 #define TOKENS_RN         "("\
                           ";"\
-                          "|:(^|=)"\
-                          "|=(:|=)"\
+                          "|=:"\
                           "|++"\
                           "|--"\
-                          "|-"\
                           "|**"\
+                          "|<"\
+                          "|>"\
                           "|,"\
                           "|!="\
-                          "|["\
+                          "|=="\
+                          "|!"\
+                          "|&"\
+                          "|||"\
                           "|]"\
+                          "|["\
                           "|(("\
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|<"\
-                          "|>"\
+                          "|#Program"\
                           "|"\
                           "(_|0|1|2|3|4|5|6|7|8|9|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)~"\
                           "|"\
-                          "\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x0E|\x0F|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1A|\x1B|\x1C|\x1D|\x1E|\x1F|\"|#|$|%|&|\'|.|/|?|@|\\|^^|`||||~~|\x7F|\x80|\x81|\x82|\x83|\x84|\x85|\x86|\x87|\x88|\x89|\x8A|\x8B|\x8C|\x8D|\x8E|\x8F|\x90|\x91|\x92|\x93|\x94|\x95|\x96|\x97|\x98|\x99|\x9A|\x9B|\x9C|\x9D|\x9E|\x9F|\xA0|\xA1|\xA2|\xA3|\xA4|\xA5|\xA6|\xA7|\xA8|\xA9|\xAA|\xAB|\xAC|\xAD|\xAE|\xAF|\xB0|\xB1|\xB2|\xB3|\xB4|\xB5|\xB6|\xB7|\xB8|\xB9|\xBA|\xBB|\xBC|\xBD|\xBE|\xBF|\xC0|\xC1|\xC2|\xC3|\xC4|\xC5|\xC6|\xC7|\xC8|\xC9|\xCA|\xCB|\xCC|\xCD|\xCE|\xCF|\xD0|\xD1|\xD2|\xD3|\xD4|\xD5|\xD6|\xD7|\xD8|\xD9|\xDA|\xDB|\xDC|\xDD|\xDE|\xDF|\xE0|\xE1|\xE2|\xE3|\xE4|\xE5|\xE6|\xE7|\xE8|\xE9|\xEA|\xEB|\xEC|\xED|\xEE|\xEF|\xF0|\xF1|\xF2|\xF3|\xF4|\xF5|\xF6|\xF7|\xF8|\xF9|\xFA|\xFB|\xFC|\xFD|\xFE|\xFF"\
+                          "\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x0E|\x0F|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1A|\x1B|\x1C|\x1D|\x1E|\x1F|\"|$|%|&|\'|.|/|?|@|\\|^^|`||||~~|\x7F|\x80|\x81|\x82|\x83|\x84|\x85|\x86|\x87|\x88|\x89|\x8A|\x8B|\x8C|\x8D|\x8E|\x8F|\x90|\x91|\x92|\x93|\x94|\x95|\x96|\x97|\x98|\x99|\x9A|\x9B|\x9C|\x9D|\x9E|\x9F|\xA0|\xA1|\xA2|\xA3|\xA4|\xA5|\xA6|\xA7|\xA8|\xA9|\xAA|\xAB|\xAC|\xAD|\xAE|\xAF|\xB0|\xB1|\xB2|\xB3|\xB4|\xB5|\xB6|\xB7|\xB8|\xB9|\xBA|\xBB|\xBC|\xBD|\xBE|\xBF|\xC0|\xC1|\xC2|\xC3|\xC4|\xC5|\xC6|\xC7|\xC8|\xC9|\xCA|\xCB|\xCC|\xCD|\xCE|\xCF|\xD0|\xD1|\xD2|\xD3|\xD4|\xD5|\xD6|\xD7|\xD8|\xD9|\xDA|\xDB|\xDC|\xDD|\xDE|\xDF|\xE0|\xE1|\xE2|\xE3|\xE4|\xE5|\xE6|\xE7|\xE8|\xE9|\xEA|\xEB|\xEC|\xED|\xEE|\xEF|\xF0|\xF1|\xF2|\xF3|\xF4|\xF5|\xF6|\xF7|\xF8|\xF9|\xFA|\xFB|\xFC|\xFD|\xFE|\xFF"\
                           //\0
 
 #define KEYWORDS_RN__     "("\
                           ";"\
-                          "|:="\
                           "|=:"\
                           "|++"\
                           "|--"\
-                          "|-"\
                           "|**"\
                           "|,"\
                           "|=="\
+                          "|<"\
+                          "|>"\
                           "|!="\
-                          "|:"\
-                          "|["\
                           "|]"\
+                          "|["\
                           "|(("\
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|#Program"\
-                          "|Variable"\
                           "|Start"\
+                          "|Variable"\
                           "|Stop"\
+                          "|Integer_2"\
                           "|Read"\
                           "|Write"\
                           "|If"\
@@ -426,37 +428,34 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           "|To"\
                           "|Do"\
                           "|Div"\
-                          "|Mod"\
-                          "|<"\
-                          "|>"\
                           "|!"\
+                          "|Mod"\
                           "|&"\
-                          "|\\|"\
-                          "|Integer_2"\
+                          "|||"\
+                          "|#Program"\
                           //\0
 
 #define KEYWORDS_RN_      "("\
                           ";"\
-                          "|:="\
                           "|=:"\
                           "|++"\
                           "|--"\
-                          "|-"\
                           "|**"\
                           "|,"\
                           "|=="\
+                          "|<"\
+                          "|>"\
                           "|!="\
-                          "|:"\
-                          "|["\
                           "|]"\
+                          "|["\
                           "|(("\
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|#Program"\
-                          "|Variable"\
                           "|Start"\
+                          "|Variable"\
                           "|Stop"\
+                          "|Integer_2"\
                           "|Read"\
                           "|Write"\
                           "|If"\
@@ -465,52 +464,44 @@ void removing_unreachable_DFA_states(int* dead_state, int* nextFreeState) {
                           "|To"\
                           "|Do"\
                           "|Div"\
-                          "|Mod"\
-                          "|<"\
-                          "|>"\
                           "|!"\
+                          "|Mod"\
                           "|&"\
-                          "|\\|"\
-                          "|Integer_2"\
+                          "|||"\
+                          "|#Program"\
                           //\0
 
 #define KEYWORDS_RN       "("\
                           ";"\
-                          "|:="\
                           "|=:"\
                           "|++"\
                           "|--"\
-                          "|-"\
                           "|**"\
                           "|,"\
                           "|=="\
+                          "|<"\
+                          "|>"\
                           "|!="\
-                          "|:"\
-                          "|["\
                           "|]"\
+                          "|["\
                           "|(("\
                           "|))"\
                           "|{"\
                           "|}"\
-                          "|#Program"\
+                          "|St(art|op)"\
                           "|Variable"\
-                          "|Start"\
-                          "|Stop"\
+                          "|I(nteger_2|f)"\
                           "|Read"\
                           "|Write"\
-                          "|If"\
                           "|Else"\
                           "|For"\
                           "|To"\
-                          "|Do"\
-                          "|Div"\
-                          "|Mod"\
-                          "|<"\
-                          "|>"\
+                          "|D(iv|o)"\
                           "|!"\
+                          "|Mod"\
                           "|&"\
-                          "|\|"\
-                          "|Integer_2"\
+                          "|||"\
+                          "|#Program"\
                           //\0
 
 #define IDENTIFIERS_RN    "("\
@@ -665,7 +656,7 @@ int main() {
 #else
     //";|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]"
     //;|:=|=:|\\+|-|\\*|,|==|!=|:|\\[|\\]|\\(|\\)|\\{|\\}|<=|>=|[_0-9A-Za-z]+|[^ \t\r\f\v\n]
-    ";:=+-*,!:[](){}<>"
+    ";:=+-*,!:[](){}<>|"
         "_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         " \t\r\f\v\n";
     printAlternationSymbol((char*)
